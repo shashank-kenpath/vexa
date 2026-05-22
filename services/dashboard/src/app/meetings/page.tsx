@@ -199,8 +199,25 @@ export default function MeetingsPage() {
         </div>
       )}
 
+      {/* Banner */}
+      <div className="relative h-48 sm:h-56 md:h-64 -mx-4 md:-mx-6 -mt-4 md:-mt-6 overflow-hidden border-b border-border/40">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={withBasePath("/Gemini_Generated_Image_ysa8nkysa8nkysa8.png?v=2")}
+          alt="Meetings Banner"
+          className="absolute inset-0 w-full h-full object-cover object-[center_30%] transition-transform duration-700 hover:scale-[1.02]"
+        />
+        {/* Sleek shadow overlays for premium feel */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-black/20" />
+        {/* Subtle glassmorphism badge/info overlay */}
+        <div className="absolute bottom-4 left-4 md:left-6 bg-background/60 backdrop-blur-md px-3 py-1.5 rounded-lg border border-border/40 text-xs font-medium text-foreground flex items-center gap-2 shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-500">
+          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+          <span>Vexa Workspace</span>
+        </div>
+      </div>
+
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-background -mx-4 md:-mx-6 px-4 md:px-6 py-4 -mt-4 md:-mt-6 border-b border-border/50 space-y-4">
+      <div className="sticky top-0 z-10 bg-background -mx-4 md:-mx-6 px-4 md:px-6 py-4 border-b border-border/50 space-y-4">
         {/* Top row: title + join button */}
         <div className="flex items-center justify-between gap-4">
           <div className="min-w-0">

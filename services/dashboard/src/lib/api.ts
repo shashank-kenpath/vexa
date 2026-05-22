@@ -390,6 +390,37 @@ export const vexaAPI = {
     return this.getRecordingAudioStreamUrl(recordingId, mediaFileId);
   },
 
+  async getRecordingMasterStreamUrl(
+    recordingId: number,
+    type: "audio" | "video"
+  ): Promise<{ url: string; duration_seconds: number | null } | null> {
+    const response = await fetch(
+      withBasePath(`/api/vexa/recordings/${recordingId}/master?type=${type}`)
+    );
+    if (response.status === 404) {
+      return null;
+    }
+    if (!response.ok) {
+      throw new Error(
+        `getRecordingMasterStreamUrl(${recordingId}, ${type}) failed: HTTP ${response.status}`
+      );
+    }
+    const data = (await response.json()) as {
+      url?: string;
+      download_url?: string;
+      duration_seconds?: number | null;
+    };
+    if (!(data.url || data.download_url)) {
+      throw new Error(
+        `getRecordingMasterStreamUrl(${recordingId}, ${type}) response had no url`
+      );
+    }
+    return {
+      url: withBasePath(`/api/vexa/recordings/${recordingId}/master?type=${type}&proxy=1`),
+      duration_seconds: data.duration_seconds ?? null,
+    };
+  },
+
   // Legacy synchronous helpers — return the /raw proxy URL directly.
   // Kept for callers that can't await (e.g. JSX `src=` on first paint).
   // New code should prefer getRecordingAudioStreamUrl (presigned URL +

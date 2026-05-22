@@ -61,7 +61,7 @@ interface MeetingsState {
   fetchMoreMeetings: () => Promise<void>;
   fetchMeeting: (id: string, options?: { silent?: boolean }) => Promise<void>;
   refreshMeeting: (id: string) => Promise<void>;
-  fetchTranscripts: (platform: Platform, nativeId: string, meetingId?: string) => Promise<void>;
+  fetchTranscripts: (platform: Platform, nativeId: string, meetingId?: string, options?: { silent?: boolean }) => Promise<void>;
   updateMeetingData: (platform: Platform, nativeId: string, data: MeetingDataUpdate) => Promise<void>;
   deleteMeeting: (platform: Platform, nativeId: string, meetingId?: string) => Promise<void>;
   setCurrentMeeting: (meeting: Meeting | null) => void;
@@ -235,8 +235,11 @@ export const useMeetingsStore = create<MeetingsState>((set, get) => ({
   },
 
   // Fetch transcripts for a meeting
-  fetchTranscripts: async (platform: Platform, nativeId: string, meetingId?: string) => {
-    set({ isLoadingTranscripts: true, error: null });
+  fetchTranscripts: async (platform: Platform, nativeId: string, meetingId?: string, options?: { silent?: boolean }) => {
+    const { silent = false } = options || {};
+    if (!silent) {
+      set({ isLoadingTranscripts: true, error: null });
+    }
     try {
       const result = await vexaAPI.getMeetingWithTranscripts(platform, nativeId, meetingId);
       // Reuse the same canonical pipeline as WS/bootstraps:

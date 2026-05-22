@@ -464,6 +464,11 @@ export interface RecordingMediaFile {
   created_at: string;
 }
 
+export interface RecordingPlaybackUrl {
+  audio: string | null;
+  video: string | null;
+}
+
 export interface RecordingData {
   id: number;
   meeting_id: number;
@@ -474,6 +479,7 @@ export interface RecordingData {
   created_at: string;
   completed_at: string | null;
   media_files: RecordingMediaFile[];
+  playback_url?: RecordingPlaybackUrl | null;
 }
 
 // ==========================================
