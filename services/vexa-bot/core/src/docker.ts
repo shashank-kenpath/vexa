@@ -46,6 +46,8 @@ export const BotConfigSchema = z.object({
   recordingEnabled: z.boolean().optional(),
   captureModes: z.array(z.string()).optional(),
   recordingUploadUrl: z.string().url().optional(),
+  captionsEnabled: z.boolean().optional(),
+  captionsOnly: z.boolean().optional(),
   transcriptionServiceUrl: z.string().optional(),
   transcriptionServiceToken: z.string().optional(),
   voiceAgentEnabled: z.boolean().optional(),

@@ -25,6 +25,14 @@ export type BotConfig = {
   captureModes?: string[];  // e.g., ['audio'], ['audio', 'video'], ['audio', 'screenshots']
   recordingUploadUrl?: string;  // meeting-api internal upload endpoint
 
+  // Caption-source transcription (Google Meet CC). When captionsEnabled is
+  // true the bot also turns on Meet's live captions and scrapes them via
+  // MutationObserver, emitting source='caption' segments. captionsOnly=true
+  // additionally suppresses audio→Whisper capture (recording-to-MinIO still
+  // happens if recordingEnabled).
+  captionsEnabled?: boolean;
+  captionsOnly?: boolean;
+
   // Per-speaker transcription
   transcriptionServiceUrl?: string;   // HTTP endpoint for transcription-service
   transcriptionServiceToken?: string; // Bearer token for transcription-service

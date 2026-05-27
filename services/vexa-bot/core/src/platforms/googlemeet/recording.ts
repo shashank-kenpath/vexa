@@ -14,6 +14,7 @@ import {
   googleSpeakingIndicators,
   googlePeopleButtonSelectors
 } from "./selectors";
+import { enableGoogleMeetCaptions, startGoogleMeetCaptionObserver } from "./captions";
 
 // Pack U.2 (v0.10.6): module-level pipeline holder so the leave path
 // (leaveGoogleMeet → stopGoogleRecording) can drive shutdown without
@@ -28,10 +29,21 @@ export async function startGoogleRecording(page: Page, botConfig: BotConfig): Pr
   // UnifiedRecordingPipeline — it subscribes to source.on('started')
   // which fires on the first audio sample. Same hook for all 3 platforms.)
 
+  const wantsCaptions = !!botConfig.captionsEnabled || !!botConfig.captionsOnly;
   const wantsAudioCapture =
+    !botConfig.captionsOnly &&
     !!botConfig.recordingEnabled &&
     (!Array.isArray(botConfig.captureModes) || botConfig.captureModes.includes("audio"));
   const sessionUid = botConfig.connectionId || `gm-${Date.now()}`;
+
+  if (wantsCaptions) {
+    try {
+      await enableGoogleMeetCaptions(page);
+      await startGoogleMeetCaptionObserver(page, botConfig);
+    } catch (err: any) {
+      log(`[Google Recording] Caption setup failed: ${err?.message || err}`);
+    }
+  }
 
   // Pack U.2 (v0.10.6): unified audio pipeline. The bot encodes WebM/Opus
   // chunks via a browser-side MediaRecorder (BrowserMediaRecorderPipeline)

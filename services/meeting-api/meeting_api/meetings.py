@@ -1090,6 +1090,11 @@ async def request_bot(
         "recordingUploadUrl": f"{MEETING_API_URL}/internal/recordings/upload",
         "transcriptionServiceUrl": os.getenv("TRANSCRIPTION_SERVICE_URL"),
         "transcriptionServiceToken": os.getenv("TRANSCRIPTION_SERVICE_TOKEN"),
+        # Caption-source transcription (Google Meet only at the moment).
+        # Defaults come from env so we can flip the whole stack without
+        # changing per-request callers (kenny-service).
+        "captionsEnabled": os.getenv("CAPTIONS_ENABLED", "false").lower() in ("1", "true", "yes"),
+        "captionsOnly": os.getenv("CAPTIONS_ONLY", "false").lower() in ("1", "true", "yes"),
     }
     if req.recording_enabled is not None:
         bot_config["recordingEnabled"] = bool(req.recording_enabled)
